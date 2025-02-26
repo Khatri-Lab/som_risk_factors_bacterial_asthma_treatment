@@ -6,6 +6,7 @@ source(file = "/labs/khatrilab/ananthg/detrimental_host_response/common_function
 
 ###############################################################
 framingham_score_pheno_matrix <- read_csv("/local-scratch/projects/candx/guangbo/ananth_processesed_framingham_data/dhr_paper_re_processesed_2024_09_27/framingham_conormalized_by_healthy_matrix.csv")
+framingham_score_pheno_matrix$som_score <- framingham_score_pheno_matrix$som_score_ratio
 ###############################################################
 
 
@@ -126,7 +127,7 @@ cox_residual_model_plot <- ggdraw() +
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_5_survival.pdf", width = 5, height = 2.75, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_R5_survival.pdf", width = 7, height = 2.75, bg = "transparent")
 
 pushViewport(viewport(layout = grid.layout(nrow = 100, ncol = 100)))
 
@@ -198,7 +199,7 @@ cox_model_plot_ihm_crp_som <- ggdraw() +
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_S5_survival.pdf", width = 5.5, height = 4.5, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_RS5_survival.pdf", width = 7, height = 4.5, bg = "transparent")
 
 pushViewport(viewport(layout = grid.layout(nrow = 150, ncol = 100)))
 

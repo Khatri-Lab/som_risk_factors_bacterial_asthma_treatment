@@ -4,7 +4,7 @@ library(forestploter)
 source("/labs/khatrilab/ananthg/detrimental_host_response/common_functions/perform_meta_analyses.R")
 source("/labs/khatrilab/ananthg/detrimental_host_response/common_functions/plot_themes.R")
 source("/labs/khatrilab/ananthg/detrimental_host_response/common_functions/JT_test_function.R")
-main_fig_summary <- read_csv("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/asthma_biologics_meta_analysis_main_fig_summary.csv")
+main_fig_summary <- read_csv("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/asthma_biologics_meta_analysis_main_fig_summary_som_ratio.csv")
 main_fig_summary[main_fig_summary == "replace"] <- ""
 ###############################################################
 
@@ -13,7 +13,7 @@ main_fig_summary[main_fig_summary == "replace"] <- ""
 asthma_meta_obj <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/asthma_GEO_datasets.RDS")
 GSE69683 <- asthma_meta_obj[[7]]
 GSE69683_with_signatures <- keep_signature_mod_genes(GSE69683)
-GSE69683_score_pheno <- as.data.frame(t(GSE69683_with_signatures$expr[c("module_1_score", "module_2_score", "module_3_score", "module_4_score", "detrimental_score", "protective_score", "som_score"), ]))
+GSE69683_score_pheno <- as.data.frame(t(GSE69683_with_signatures$expr[c("module_1_score", "module_2_score", "module_3_score", "module_4_score", "detrimental_score", "protective_score", "som_score_ratio"), ]))
 GSE69683_score_pheno$pheno <- "Severe asthma (n = 334)"
 GSE69683_score_pheno$pheno[GSE69683_with_signatures$pheno$asthma_status == "Healthy, non-smokers"] <- "Healthy (n = 87)"
 GSE69683_score_pheno$pheno[GSE69683_with_signatures$pheno$asthma_status == "Moderate asthma, non-smokers"] <- "Moderate asthma (n = 77)"
@@ -54,7 +54,7 @@ GSE69683_module_3_plot <- plot_JT_test(GSE69683_score_pheno, "module_3_score", "
 GSE69683_module_4_plot <- plot_JT_test(GSE69683_score_pheno, "module_4_score", "Module 4 score") + theme(legend.position = "none")
 GSE69683_detrimental_plot <- plot_JT_test(GSE69683_score_pheno, "detrimental_score", "Detrimental")
 GSE69683_protective_plot <- plot_JT_test(GSE69683_score_pheno, "protective_score", "Protective") + theme(legend.position = "none")
-GSE69683_som_plot <- plot_JT_test(GSE69683_score_pheno, "som_score", "SoM") + theme(legend.position = "none")
+GSE69683_som_plot <- plot_JT_test(GSE69683_score_pheno, "som_score_ratio", "SoM") + theme(legend.position = "none")
 GSE69683_legend <- as_ggplot(ggpubr::get_legend(GSE69683_detrimental_plot))
 ###############################################################
 
@@ -62,7 +62,7 @@ GSE69683_legend <- as_ggplot(ggpubr::get_legend(GSE69683_detrimental_plot))
 ###############################################################
 GSE96530 <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/asthma_GEO_GSE96530.RDS")
 GSE96530_with_signatures <- keep_signature_mod_genes(GSE96530)
-GSE96530_score_pheno <- as.data.frame(t(GSE96530_with_signatures$expr[c("module_1_score", "module_2_score", "module_3_score", "module_4_score", "detrimental_score", "protective_score", "som_score"), ]))
+GSE96530_score_pheno <- as.data.frame(t(GSE96530_with_signatures$expr[c("module_1_score", "module_2_score", "module_3_score", "module_4_score", "detrimental_score", "protective_score", "som_score_ratio"), ]))
 GSE96530_score_pheno$pheno <- "Asthma exacerbation (n = 19)"
 GSE96530_score_pheno$pheno[GSE96530_with_signatures$pheno$visit == "Convalescent"] <- "Convalescence (n = 19)"
 GSE96530_score_pheno$subject_id <- GSE96530_with_signatures$pheno$subject_id
@@ -103,7 +103,7 @@ GSE96530_module_3_plot <- plot_wilcox_test(GSE96530_score_pheno, "module_3_score
 GSE96530_module_4_plot <- plot_wilcox_test(GSE96530_score_pheno, "module_4_score", "Module 4 score", "decreasing") + theme(legend.position = "none")
 GSE96530_detrimental_plot <- plot_wilcox_test(GSE96530_score_pheno, "detrimental_score", "Detrimental", "increasing")
 GSE96530_protective_plot <- plot_wilcox_test(GSE96530_score_pheno, "protective_score", "Protective", "decreasing") + theme(legend.position = "none")
-GSE96530_som_plot <- plot_wilcox_test(GSE96530_score_pheno, "som_score", "SoM", "increasing") + theme(legend.position = "none")
+GSE96530_som_plot <- plot_wilcox_test(GSE96530_score_pheno, "som_score_ratio", "SoM", "increasing") + theme(legend.position = "none")
 GSE96530_legend <- as_ggplot(ggpubr::get_legend(GSE96530_detrimental_plot))
 ###############################################################
 
@@ -278,7 +278,7 @@ aligned_supp_fig <- cowplot::align_plots(GSE69683_module_1_plot, GSE69683_module
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_3_combined_asthma.pdf", width = 5, height = 5, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_R3_combined_asthma.pdf", width = 5, height = 5, bg = "transparent")
 
 pushViewport(viewport(layout = grid.layout(nrow = 105, ncol = 100)))
 
@@ -318,7 +318,7 @@ dev.off()
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_S3_combined_asthma.pdf", width = 7, height = 7, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_RS3_combined_asthma.pdf", width = 7, height = 7, bg = "transparent")
 
 pushViewport(viewport(layout = grid.layout(nrow = 100, ncol = 100)))
 
@@ -326,21 +326,21 @@ print(as_ggplot(aligned_supp_fig[[1]]), vp = viewport(layout.pos.row = 1:32, lay
 print(as_ggplot(aligned_supp_fig[[2]]), vp = viewport(layout.pos.row = 1:32, layout.pos.col = 26:50))
 print(as_ggplot(aligned_supp_fig[[3]]), vp = viewport(layout.pos.row = 1:32, layout.pos.col = 51:75))
 print(as_ggplot(aligned_supp_fig[[4]]), vp = viewport(layout.pos.row = 1:32, layout.pos.col = 76:100))
-print(as_ggplot(aligned_supp_fig[[5]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 1:25))
-print(as_ggplot(aligned_supp_fig[[6]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 26:50))
-print(as_ggplot(aligned_supp_fig[[7]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 51:75))
-print(as_ggplot(aligned_supp_fig[[8]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 76:100))
-print(as_ggplot(aligned_supp_fig[[9]]), vp = viewport(layout.pos.row = 33:64, layout.pos.col = 25:75))
+print(as_ggplot(aligned_supp_fig[[5]]), vp = viewport(layout.pos.row = 34:65, layout.pos.col = 1:25))
+print(as_ggplot(aligned_supp_fig[[6]]), vp = viewport(layout.pos.row = 34:65, layout.pos.col = 26:50))
+print(as_ggplot(aligned_supp_fig[[7]]), vp = viewport(layout.pos.row = 34:65, layout.pos.col = 51:75))
+print(as_ggplot(aligned_supp_fig[[8]]), vp = viewport(layout.pos.row = 34:65, layout.pos.col = 76:100))
+print(as_ggplot(aligned_supp_fig[[9]]), vp = viewport(layout.pos.row = 67:98, layout.pos.col = 25:75))
 
 print(GSE69683_legend, vp = viewport(layout.pos.row = 31:31, layout.pos.col = 1:100))
-print(GSE96530_legend, vp = viewport(layout.pos.row = 99:100, layout.pos.col = 1:100))
-print(GSE69683_one_panel_legend, vp = viewport(layout.pos.row = 66:66, layout.pos.col = 1:100))
+print(GSE96530_legend, vp = viewport(layout.pos.row = 64:64, layout.pos.col = 1:100))
+print(GSE69683_one_panel_legend, vp = viewport(layout.pos.row = 99:100, layout.pos.col = 1:100))
 
 grid.text(x = unit(0.5, "npc"), y = unit(0.985, "npc"), label = "Asthma (baseline, GSE69683)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
-grid.text(x = unit(0.5, "npc"), y = unit(0.31, "npc"), label = "Asthma (exacerbation, GSE96530)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
+grid.text(x = unit(0.5, "npc"), y = unit(0.65, "npc"), label = "Asthma (exacerbation, GSE96530)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
 grid.text(x = unit(0.015, "npc"), y = unit(0.985, "npc"), label = "A", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.015, "npc"), y = unit(0.655, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.015, "npc"), y = unit(0.31, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.015, "npc"), y = unit(0.65, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.015, "npc"), y = unit(0.32, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
 
 dev.off()
 ###############################################################

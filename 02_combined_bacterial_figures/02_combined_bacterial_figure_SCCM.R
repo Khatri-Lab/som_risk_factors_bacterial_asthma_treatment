@@ -449,79 +449,56 @@ interaction_plot_detrimental <- interact_plot(model = log_model_detrimental, pre
 aligned_main_fig <- cowplot::align_plots(bacterial_som_plot + theme(legend.position = "none"), SoM_ROC, burns_protective_plot, vanish_protective_plot, interaction_plot_protective,
   align = "hv", axis = "tblr")
 cohort_description <- readPNG("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_1_combined_bacterial_panel_a.png")
+aligned_supp_fig <- cowplot::align_plots(bacterial_detrimental_plot + theme(legend.position = "none"), bacterial_protective_plot + theme(legend.position = "none"), protective_change_plot, detrimental_change_plot, vanish_randomized_protective_plot, vanish_detrimental_plot + theme(legend.position = "none"), interaction_plot_detrimental, bacterial_module_4_plot + theme(legend.position = "none"),
+  align = "hv", axis = "tblr")
+###############################################################
 
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_1_combined_bacterial.pdf", width = 7.5, height = 7, bg = "transparent")
 
-pushViewport(viewport(layout = grid.layout(nrow = 70, ncol = 75)))
+###############################################################
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_SCCM_bacterial_infection.pdf", width = 7.5, height = 4.4, bg = "transparent")
+
+pushViewport(viewport(layout = grid.layout(nrow = 44, ncol = 75)))
 pushViewport(viewport(layout.pos.row = 2:44, layout.pos.col = 1:54))
 grid.raster(cohort_description, x = 0.5, y = 0.5,)
 upViewport(1)
 print(as_ggplot(aligned_main_fig[[1]]), vp = viewport(layout.pos.row = 2:22, layout.pos.col = 53:75))
 print(as_ggplot(aligned_main_fig[[2]]), vp = viewport(layout.pos.row = 21:42, layout.pos.col = 53:75))
-print(as_ggplot(aligned_main_fig[[3]]), vp = viewport(layout.pos.row = 45:68, layout.pos.col = 1:18))
-print(as_ggplot(aligned_main_fig[[4]]), vp = viewport(layout.pos.row = 45:68, layout.pos.col = 19:36))
-print(as_ggplot(aligned_main_fig[[5]]), vp = viewport(layout.pos.row = 45:68, layout.pos.col = 38:56))
-print(as_ggplot(log_odds_forest_plot), vp = viewport(layout.pos.row = 47:69, layout.pos.col = 57:74))
 
-print(hydrocortisone_legend, vp = viewport(layout.pos.row = 69:70, layout.pos.col = 1:56))
-
-grid.rect(x = unit(0.5, "npc"), y = unit(0.9875, "npc"), width = unit(0.99, "npc"), height = unit(0.025, "npc"), gp = gpar(fill = "#EFEFEF", col = "transparent"))
-grid.rect(x = unit(0.5, "npc"), y = unit(0.382, "npc"), width = unit(0.99, "npc"), height = unit(0.025, "npc"), gp = gpar(fill = "#EFEFEF", col = "transparent"))
-
-grid.text(x = unit(0.5, "npc"), y = unit(0.9875, "npc"), label = "Bacterial infection at presentation (17 datasets)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
-grid.text(x = unit(0.5, "npc"), y = unit(0.382, "npc"), label = "Hydrocortisone treatment response in patients with shock (Burn and VANISH cohorts)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
-grid.text(x = unit(0.875, "npc"), y = unit(0.3175, "npc"), label = "Hydrocortisone vs. placebo\nin protective \U2265 median", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
-
-grid.text(x = unit(0.01, "npc"), y = unit(0.96, "npc"), label = "A", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.71, "npc"), y = unit(0.96, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.71, "npc"), y = unit(0.69, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.3575, "npc"), label = "D", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.25, "npc"), y = unit(0.3575, "npc"), label = "E", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.50, "npc"), y = unit(0.3575, "npc"), label = "F", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.76, "npc"), y = unit(0.3575, "npc"), label = "G", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.5, "npc"), y = unit(0.98, "npc"), label = "Bacterial infection at presentation (17 datasets)", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
 
 dev.off()
 ###############################################################
 
 
 ###############################################################
-aligned_supp_fig <- cowplot::align_plots(bacterial_detrimental_plot + theme(legend.position = "none"), bacterial_protective_plot + theme(legend.position = "none"), protective_change_plot, detrimental_change_plot, vanish_randomized_protective_plot, vanish_detrimental_plot + theme(legend.position = "none"), interaction_plot_detrimental, bacterial_module_4_plot + theme(legend.position = "none"),
-  align = "hv", axis = "tblr")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_SCCM_hydrocortisone_1.pdf", width = 7.2, height = 3, bg = "transparent")
 
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_S1_combined_bacterial.pdf", width = 7.2, height = 7.5, bg = "transparent")
+pushViewport(viewport(layout = grid.layout(nrow = 37, ncol = 100)))
 
-pushViewport(viewport(layout = grid.layout(nrow = 100, ncol = 100)))
+print(as_ggplot(baseline_som_forest_plot), vp = viewport(layout.pos.row = 1:36, layout.pos.col = 1:36))
+print(as_ggplot(aligned_supp_fig[[3]]), vp = viewport(layout.pos.row = 4:36, layout.pos.col = 37:69))
+print(as_ggplot(aligned_supp_fig[[4]]), vp = viewport(layout.pos.row = 4:36, layout.pos.col = 70:100))
+print(hydrocortisone_legend, vp = viewport(layout.pos.row = 36:37, layout.pos.col = 37:100))
 
-print(as_ggplot(aligned_supp_fig[[1]]), vp = viewport(layout.pos.row = 1:32, layout.pos.col = 1:42))
-print(bacterial_plot_legend, vp = viewport(layout.pos.row = 1:32, layout.pos.col = 43:58))
-print(as_ggplot(aligned_supp_fig[[2]]), vp = viewport(layout.pos.row = 1:32, layout.pos.col = 59:100))
-print(as_ggplot(baseline_som_forest_plot), vp = viewport(layout.pos.row = 32:67, layout.pos.col = 1:36))
-print(as_ggplot(aligned_supp_fig[[3]]), vp = viewport(layout.pos.row = 32:67, layout.pos.col = 37:69))
-print(as_ggplot(aligned_supp_fig[[4]]), vp = viewport(layout.pos.row = 32:67, layout.pos.col = 70:100))
-print(as_ggplot(aligned_supp_fig[[5]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 1:33))
-print(as_ggplot(aligned_supp_fig[[6]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 34:67))
-print(hydrocortisone_legend, vp = viewport(layout.pos.row = 67:68, layout.pos.col = 37:69))
-
-print(as_ggplot(aligned_supp_fig[[7]]), vp = viewport(layout.pos.row = 69:100, layout.pos.col = 68:100))
-grid.text(x = unit(0.185, "npc"), y = unit(0.66, "npc"), label = "Non-survivor (NS) vs.\nSurvivor (S) at baseline", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
-
-
-
-grid.text(x = unit(0.015, "npc"), y = unit(0.9875, "npc"), label = "A", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.605, "npc"), y = unit(0.9875, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.015, "npc"), y = unit(0.68, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.38, "npc"), y = unit(0.68, "npc"), label = "D", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.705, "npc"), y = unit(0.68, "npc"), label = "E", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.015, "npc"), y = unit(0.31, "npc"), label = "F", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.34, "npc"), y = unit(0.31, "npc"), label = "G", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.685, "npc"), y = unit(0.31, "npc"), label = "H", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.185, "npc"), y = unit(0.92, "npc"), label = "Non-survivor (NS) vs.\nSurvivor (S) at baseline", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
+grid.text(x = unit(0.685, "npc"), y = unit(0.97, "npc"), label = "Burn cohort", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
 
 dev.off()
 ###############################################################
 
 
 ###############################################################
-coconut_data_summary <- as.data.frame(df_bact %>% group_by(Dataset = name) %>% summarize(Cases = sum(control.0.class == 1), Controls = sum(control.0.class == 0), Females = sum(Sex == "F"), Tissue = first(Tissue_Category)))
-write_csv(coconut_data_summary, "/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/table_S1_bacterial_data_summary.csv")
-###############################################################
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_SCCM_hydrocortisone_2.pdf", width = 7.5, height = 2.6, bg = "transparent")
 
+pushViewport(viewport(layout = grid.layout(nrow = 26, ncol = 75)))
+print(as_ggplot(aligned_main_fig[[3]]), vp = viewport(layout.pos.row = 1:24, layout.pos.col = 1:18))
+print(as_ggplot(aligned_main_fig[[4]]), vp = viewport(layout.pos.row = 1:24, layout.pos.col = 19:36))
+print(as_ggplot(aligned_main_fig[[5]]), vp = viewport(layout.pos.row = 1:24, layout.pos.col = 38:56))
+print(as_ggplot(log_odds_forest_plot), vp = viewport(layout.pos.row = 3:25, layout.pos.col = 57:74))
+
+print(hydrocortisone_legend, vp = viewport(layout.pos.row = 25:26, layout.pos.col = 1:56))
+
+grid.text(x = unit(0.875, "npc"), y = unit(0.9, "npc"), label = "Hydrocortisone vs. placebo\nin protective \U2265 median", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
+
+dev.off()
+###############################################################

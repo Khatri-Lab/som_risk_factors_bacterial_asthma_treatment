@@ -76,7 +76,8 @@ colnames(gen_iii_subj_pheno)[colnames(gen_iii_subj_pheno) == "g3b0097"] <- "smok
 
 ###############################################################
 gen_iii_labs <- read_process_phenotype_file("/local-scratch/projects/candx/guangbo/Framingham_data_part1/PhenoGenotypeFiles/RootStudyConsentSet_phs000007.Framingham.v31.p12.c1.HMB-IRB-MDS/PhenotypeFiles/phs000007.v31.pht002889.v4.p12.c1.l_fhslab_2011_m_0656s.HMB-IRB-MDS.txt", gen_iii_subj)
-gen_iii_labs <- gen_iii_labs[, c("shareid", "HBA1C", "MO_PER", "LY_PER", "NE_PER", "MO_NUM", "LY_NUM", "NE_NUM")]
+gen_iii_labs <- gen_iii_labs[, c("shareid", "HBA1C", "MO_PER", "LY_PER", "NE_PER", "MO_NUM", "LY_NUM", "NE_NUM", "CHOL", "TRIG", "GLUC", "CREAT", "HDL", "CRP", "UR_ALB", "UR_CREAT", "ALB", "AST", "ALT", "BILI", "CA", "GGT", "PHOS")]
+colnames(gen_iii_labs) <- c("shareid", "HBA1C", "MO_PER", "LY_PER", "NE_PER", "MO_NUM", "LY_NUM", "NE_NUM", "total_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "HDL_cholestrol_plasma", "c_reactive_protein_serum", "albumin_urine", "creatinine_urine", "albumin_serum", "aspartate_aminotransferase_serum", "alanine_aminotransferase_serum", "total_bilirubin_serum", "calcium_serum", "gamma_glutamyltransferase_serum", "phosphorus_serum")
 gen_iii_subj_pheno <- merge(gen_iii_subj_pheno, gen_iii_labs, by = "shareid", all = TRUE)
 ###############################################################
 
@@ -119,8 +120,8 @@ pheno_module_score_matrix$clinical_diagnosis_disease[pheno_module_score_matrix$s
 
 
 ###############################################################
-gen_iii_subj_pheno <- gen_iii_subj_pheno[, c("shareid", "sex", "age_at_exam_2", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "HBA1C", "MO_NUM", "LY_NUM", "NE_NUM", "MO_PER", "LY_PER", "NE_PER", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date")]
-colnames(gen_iii_subj_pheno) <- c("shareid", "sex", "age", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "monocyte_count", "lymphocyte_count", "neutrophil_count", "monocyte_prop", "lymphocyte_prop", "neutrophil_prop", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date")
+gen_iii_subj_pheno <- gen_iii_subj_pheno[, c("shareid", "sex", "age_at_exam_2", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "HBA1C", "MO_NUM", "LY_NUM", "NE_NUM", "MO_PER", "LY_PER", "NE_PER", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "total_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "HDL_cholestrol_plasma", "c_reactive_protein_serum", "albumin_urine", "creatinine_urine", "albumin_serum", "aspartate_aminotransferase_serum", "alanine_aminotransferase_serum", "total_bilirubin_serum", "calcium_serum", "gamma_glutamyltransferase_serum", "phosphorus_serum", "c_reactive_protein_serum")]
+colnames(gen_iii_subj_pheno) <- c("shareid", "sex", "age", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "monocyte_count", "lymphocyte_count", "neutrophil_count", "monocyte_prop", "lymphocyte_prop", "neutrophil_prop", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "total_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "HDL_cholestrol_plasma", "c_reactive_protein_serum", "albumin_urine", "creatinine_urine", "albumin_serum", "aspartate_aminotransferase_serum", "alanine_aminotransferase_serum", "total_bilirubin_serum", "calcium_serum", "gamma_glutamyltransferase_serum", "phosphorus_serum", "c_reactive_protein_serum")
 pheno_module_score_matrix <- merge(pheno_module_score_matrix, gen_iii_subj_pheno, by = "shareid")
 write_csv(pheno_module_score_matrix, file = "/local-scratch/projects/candx/guangbo/ananth_processesed_framingham_data/dhr_paper_re_processesed_2024_09_27/gen_iii_module_score_pheno_exon.csv")
 ###############################################################

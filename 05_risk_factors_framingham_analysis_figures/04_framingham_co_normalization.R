@@ -15,6 +15,7 @@ create_meta_obj <- function(cohort_name)
   rownames(pheno_matrix) <- as.character(pheno_matrix$shareid)
   pheno_meta_integrator <- pheno_matrix[match(colnames(expr), rownames(pheno_matrix)), ]
   pheno_meta_integrator$Class <- 1 - pheno_meta_integrator$healthy
+  print(table(pheno_meta_integrator$Class))
   expr_keys <- rownames(expr)
   names(expr_keys) <- expr_keys
   expr_mtrx <- as.matrix(sapply(expr, as.numeric))
@@ -45,7 +46,7 @@ conorm_expr <- Reduce(cbind, list(framingham_conormalized_results$COCONUTList$of
   framingham_conormalized_results$controlList$GSEs$gen_iii$genes))
 conorm_expr <- cbind(gene_name = rownames(conorm_expr), conorm_expr)
 conorm_expr <- combine_module_scores(conorm_expr)
-pheno_to_keep <- c("age", "sex", "bmi", "weight", "height", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "healthy", "cancer", "cardio", "diabetes", "fever", "dementia", "clinical_diagnosis_disease", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "death_date", "death_cause")
+pheno_to_keep <- c("age", "sex", "bmi", "weight", "height", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "healthy", "cancer", "cardio", "diabetes", "fever", "dementia", "clinical_diagnosis_disease", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "death_date", "death_cause", "c_reactive_protein_serum")
 conorm_pheno <- Reduce(rbind, list(framingham_conormalized_results$COCONUTList$off_spr$pheno[, pheno_to_keep],
   framingham_conormalized_results$COCONUTList$gen_iii$pheno[, pheno_to_keep],
   framingham_conormalized_results$controlList$GSEs$off_spr$pheno[, pheno_to_keep],

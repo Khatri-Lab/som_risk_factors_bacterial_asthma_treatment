@@ -76,8 +76,17 @@ colnames(off_spr_subj_pheno)[colnames(off_spr_subj_pheno) == "H066"] <- "smoking
 
 ###############################################################
 off_spr_labs <- read_process_phenotype_file("/local-scratch/projects/candx/guangbo/Framingham_data_part1/PhenoGenotypeFiles/RootStudyConsentSet_phs000007.Framingham.v31.p12.c1.HMB-IRB-MDS/PhenotypeFiles/phs000007.v31.pht000742.v6.p12.c1.fhslab1_8s.HMB-IRB-MDS.txt", off_spr_subj)
-off_spr_labs <- off_spr_labs[, c("shareid", "A1C")]
+off_spr_labs <- off_spr_labs[, c("shareid", "A1C", "TOT_CHOL", "HDL_CHOL", "TRIG", "GLUCOSE", "CREATINI", "URALBUMI", "URCREAT")]
+colnames(off_spr_labs) <- c("shareid", "A1C", "total_cholestrol_plasma", "HDL_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "albumin_urine", "creatinine_urine")
 off_spr_subj_pheno <- merge(off_spr_subj_pheno, off_spr_labs, by = "shareid", all = TRUE)
+###############################################################
+
+
+###############################################################
+off_spr_crp <- read_process_phenotype_file("/local-scratch/projects/candx/guangbo/Framingham_data_part1/PhenoGenotypeFiles/RootStudyConsentSet_phs000007.Framingham.v31.p12.c1.HMB-IRB-MDS/PhenotypeFiles/phs000007.v31.pht002888.v5.p12.c1.l_crp_2008_m_0477s.HMB-IRB-MDS.txt", off_spr_subj)
+off_spr_crp <- off_spr_crp[, c("shareid", "crp")]
+colnames(off_spr_crp) <- c("shareid", "c_reactive_protein_serum")
+off_spr_subj_pheno <- merge(off_spr_subj_pheno, off_spr_crp, by = "shareid", all = TRUE)
 ###############################################################
 
 
@@ -119,8 +128,8 @@ pheno_module_score_matrix$clinical_diagnosis_disease[pheno_module_score_matrix$s
 
 
 ###############################################################
-off_spr_subj_pheno <- off_spr_subj_pheno[, c("shareid", "sex", "age_at_exam_8", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date")]
-colnames(off_spr_subj_pheno) <- c("shareid", "sex", "age", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date")
+off_spr_subj_pheno <- off_spr_subj_pheno[, c("shareid", "sex", "age_at_exam_8", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "total_cholestrol_plasma", "HDL_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "albumin_urine", "creatinine_urine", "c_reactive_protein_serum")]
+colnames(off_spr_subj_pheno) <- c("shareid", "sex", "age", "weight", "height", "bmi", "regular_smokers", "smoking_quiters", "smoking_quitting_age", "death_date", "death_cause", "A1C", "first_cardio_diagnosis_date", "first_cancer_diagnosis_date", "total_cholestrol_plasma", "HDL_cholestrol_plasma", "triglycerides_plasma", "glucose_plasma", "creatinine_serum", "albumin_urine", "creatinine_urine", "c_reactive_protein_serum")
 pheno_module_score_matrix <- merge(pheno_module_score_matrix, off_spr_subj_pheno, by = "shareid")
 write_csv(pheno_module_score_matrix, file = "/local-scratch/projects/candx/guangbo/ananth_processesed_framingham_data/dhr_paper_re_processesed_2024_09_27/off_spr_module_score_pheno_exon.csv")
 ###############################################################

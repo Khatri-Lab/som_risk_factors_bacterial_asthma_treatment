@@ -14,13 +14,14 @@ ht_opt("simple_anno_size" = tile_size)
 
 ###############################################################
 coconut_combined <- read_csv("/local-scratch/projects/candx/guangbo/ananth_processesed_framingham_data/dhr_paper_re_processesed_2024_09_27/framingham_conormalized_by_healthy_matrix.csv")
+coconut_combined$som_score <- coconut_combined$som_score_ratio
 coconut_combined$disease_status <- as.factor(1 - coconut_combined$healthy)
 coconut_combined$years_no_smoking <- coconut_combined$age - coconut_combined$smoking_quitting_age
 ###############################################################
 
 
 ###############################################################
-case_control_summary <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/case_control_analysis_summary.rds")
+case_control_summary <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/case_control_analysis_summary_som_ratio.rds")
 eff_size_matrix <- case_control_summary$eff_size_matrix[, c("SoM", "Detrimental", "Protective")]
 fdr_matrix <- case_control_summary$fdr_matrix[, c("SoM", "Detrimental", "Protective")]
 data_summary <- case_control_summary$combined_summary
@@ -81,7 +82,7 @@ clean_up_framingham_matrix <- function(wide_tibble, row_order, old_column_order,
 
 
 ###############################################################
-combined_coconut_regression <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/framingham_conormalized_linear_models_summary.rds")
+combined_coconut_regression <- readRDS("/labs/khatrilab/ananthg/detrimental_host_response/data_2024_09_27/framingham_conormalized_linear_models_summary_som_ratio.rds")
 regression_coeff <- clean_up_framingham_matrix(combined_coconut_regression$regression_coeff)
 regression_p_value <- clean_up_framingham_matrix(combined_coconut_regression$regression_p_value)
 min_regression <- -0.35
@@ -346,7 +347,7 @@ plot_each_score_diet <- function(score_pheno_frame, score_name, score_name_plot,
 }
 GSE88794_module_1_plot <- plot_each_score_diet(fasting_ogtt_data_only, "module_1_score", "Module 1 (z score)", print_NS = TRUE)
 GSE88794_module_2_plot <- plot_each_score_diet(fasting_ogtt_data_only, "module_2_score", "Module 2 (z score)")
-GSE88794_som_plot <- plot_each_score_diet(fasting_ogtt_data_only, "som_score", "SoM (z score)", print_NS = TRUE)
+GSE88794_som_plot <- plot_each_score_diet(fasting_ogtt_data_only, "som_score_ratio", "SoM (z score)", print_NS = TRUE)
 GSE88794_legend <- as_ggplot(ggpubr::get_legend(GSE88794_som_plot))
 GSE88794_combined <- plot_grid(GSE88794_module_1_plot + theme(legend.position = "none"), GSE88794_som_plot + theme(legend.position = "none"), nrow = 1, align = "hv", axis = "tblr")
 GSE88794_tsang_ihm_plot <- plot_each_score_diet(fasting_ogtt_data_only, "tsang_ihm_score", "IHM (z score)", print_NS = TRUE)
@@ -354,7 +355,7 @@ GSE88794_tsang_ihm_plot <- plot_each_score_diet(fasting_ogtt_data_only, "tsang_i
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_4_risk_factors.pdf", width = 7.2, height = 8, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_R4_risk_factors.pdf", width = 7.2, height = 8, bg = "transparent")
 
 pushViewport(viewport(layout = grid.layout(nrow = 100, ncol = 100)))
 
@@ -427,7 +428,7 @@ som_ihm_corr <- ggplot(coconut_combined, aes(x = som_score, y = tsang_ihm_score)
   geom_point(size = point_size) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
   stat_smooth(method = "lm", formula = y ~ x, geom = "smooth", lwd = line_size_main_mm) +
-  stat_cor(p.accuracy = 0.01, r.accuracy = 0.01, size = text_size_labels, label.y = Inf, label.x = 0, hjust = 1, vjust = 1.5)
+  stat_cor(p.accuracy = 0.01, r.accuracy = 0.01, size = text_size_labels, label.y = Inf, label.x = 0.9, hjust = 1, vjust = 1.5)
 ###############################################################
 
 
@@ -534,24 +535,24 @@ age_sex_interaction_bottom <- plot_grid(module_1_age_sex_interaction, module_2_a
 
 
 ###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_S4_risk_factors.pdf", width = 9, height = 15, bg = "transparent")
+cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_RS4_risk_factors.pdf", width = 9, height = 15, bg = "transparent")
 
-pushViewport(viewport(layout = grid.layout(nrow = 193, ncol = 100)))
+pushViewport(viewport(layout = grid.layout(nrow = 190, ncol = 100)))
 
-print(GSE88794_combined, vp = viewport(layout.pos.row = 94:121, layout.pos.col = 1:100))
-print(GSE88794_legend, vp = viewport(layout.pos.row = 122:124, layout.pos.col = 1:100))
+print(GSE88794_combined, vp = viewport(layout.pos.row = 1:28, layout.pos.col = 1:100))
+print(GSE88794_legend, vp = viewport(layout.pos.row = 29:31, layout.pos.col = 1:100))
 
-print(som_ihm_corr, vp = viewport(layout.pos.row = 127:159, layout.pos.col = 1:40))
+print(som_ihm_corr, vp = viewport(layout.pos.row = 34:66, layout.pos.col = 1:40))
 
-print(GSE88794_tsang_ihm_plot, vp = viewport(layout.pos.row = 127:159, layout.pos.col = 50:100))
+print(GSE88794_tsang_ihm_plot, vp = viewport(layout.pos.row = 34:66, layout.pos.col = 50:100))
 
-print(smoking_tsang_ihm_plot + theme(legend.position = "none"), vp = viewport(layout.pos.row = 162:191, layout.pos.col = 1:21))
-print(as_ggplot(ggpubr::get_legend(smoking_tsang_ihm_plot)), vp = viewport(layout.pos.row = 162:176, layout.pos.col = 22:37))
+print(smoking_tsang_ihm_plot + theme(legend.position = "none"), vp = viewport(layout.pos.row = 69:98, layout.pos.col = 1:21))
+print(as_ggplot(ggpubr::get_legend(smoking_tsang_ihm_plot)), vp = viewport(layout.pos.row = 69:83, layout.pos.col = 22:37))
 
-print(a1c_tsang_ihm_plot + theme(legend.position = "none"), vp = viewport(layout.pos.row = 162:191, layout.pos.col = 40:60))
-print(as_ggplot(ggpubr::get_legend(a1c_tsang_ihm_plot)), vp = viewport(layout.pos.row = 179:193, layout.pos.col = 24:40))
+print(a1c_tsang_ihm_plot + theme(legend.position = "none"), vp = viewport(layout.pos.row = 69:98, layout.pos.col = 40:60))
+print(as_ggplot(ggpubr::get_legend(a1c_tsang_ihm_plot)), vp = viewport(layout.pos.row = 86:100, layout.pos.col = 24:40))
 
-pushViewport(viewport(layout.pos.row = 163:182, layout.pos.col = 62:99))
+pushViewport(viewport(layout.pos.row = 70:89, layout.pos.col = 62:99))
 draw(ht_mp_proteomic_regression, height = nrow(proteomic_regression_coeff) * tile_size, gap = gap_size, background = "transparent",
   column_title = "Arivale cohort regression\n(proteomics, 2487 subjects)", column_title_gp = gpar(fontsize = base_text_size, fontfamily = base_font_family),
   newpage = FALSE)
@@ -560,47 +561,25 @@ decorate_annotation("Module", {
 })
 upViewport(1)
 
-pushViewport(viewport(layout.pos.row = 186:190, layout.pos.col = 62:89))
+pushViewport(viewport(layout.pos.row = 93:97, layout.pos.col = 62:89))
 draw(proteomic_regression_legend)
-grid.text(x = unit(0.85, "npc"), y = unit(0.2, "npc"), label = "* p < 0.05", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
 upViewport(1)
+grid.text(x = unit(0.85, "npc"), y = unit(0.51, "npc"), label = "* p < 0.05", gp = gpar(fontsize = base_text_size, fontface = "plain", col = black_text_colour))
 
-print(cor_by_risk, vp = viewport(layout.pos.row = 59:89, layout.pos.col = 3:97))
-print(age_sex_interaction_top, vp = viewport(layout.pos.row = 2:27, layout.pos.col = 3:97))
-print(age_sex_interaction_bottom, vp = viewport(layout.pos.row = 31:56, layout.pos.col = 3:97))
-print(age_sex_interaction_legend, vp = viewport(layout.pos.row = 28:30, layout.pos.col = 3:97))
+print(cor_by_risk, vp = viewport(layout.pos.row = 101:133, layout.pos.col = 3:97))
+print(age_sex_interaction_top, vp = viewport(layout.pos.row = 136:161, layout.pos.col = 3:97))
+print(age_sex_interaction_bottom, vp = viewport(layout.pos.row = 165:190, layout.pos.col = 3:97))
+print(age_sex_interaction_legend, vp = viewport(layout.pos.row = 162:164, layout.pos.col = 3:97))
 
 grid.text(x = unit(0.01, "npc"), y = unit(0.992, "npc"), label = "A", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.69, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.51, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.51, "npc"), y = unit(0.51, "npc"), label = "D", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.345, "npc"), label = "E", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.5, "npc"), y = unit(0.345, "npc"), label = "F", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.165, "npc"), label = "G", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.39, "npc"), y = unit(0.165, "npc"), label = "H", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.65, "npc"), y = unit(0.165, "npc"), label = "I", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.51, "npc"), y = unit(0.992, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.01, "npc"), y = unit(0.827, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.51, "npc"), y = unit(0.827, "npc"), label = "D", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.01, "npc"), y = unit(0.645, "npc"), label = "E", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.4, "npc"), y = unit(0.645, "npc"), label = "F", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.62, "npc"), y = unit(0.645, "npc"), label = "G", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.01, "npc"), y = unit(0.47, "npc"), label = "H", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
+grid.text(x = unit(0.01, "npc"), y = unit(0.29, "npc"), label = "I", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
 
 dev.off()
 ###############################################################
-
-
-###############################################################
-cairo_pdf("/labs/khatrilab/ananthg/detrimental_host_response/figures_2024_09_27/fig_RR3_age_sex_interaction.pdf", width = 9, height = 4.5, bg = "transparent")
-
-pushViewport(viewport(layout = grid.layout(nrow = 54, ncol = 100)))
-
-print(age_sex_interaction_top, vp = viewport(layout.pos.row = 1:26, layout.pos.col = 3:97))
-print(age_sex_interaction_bottom, vp = viewport(layout.pos.row = 29:54, layout.pos.col = 3:97))
-print(age_sex_interaction_legend, vp = viewport(layout.pos.row = 27:28, layout.pos.col = 3:97))
-
-grid.text(x = unit(0.01, "npc"), y = unit(0.98, "npc"), label = "A", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.345, "npc"), y = unit(0.98, "npc"), label = "B", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.67, "npc"), y = unit(0.98, "npc"), label = "C", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.01, "npc"), y = unit(0.47, "npc"), label = "D", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.27, "npc"), y = unit(0.47, "npc"), label = "E", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.51, "npc"), y = unit(0.47, "npc"), label = "F", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-grid.text(x = unit(0.76, "npc"), y = unit(0.47, "npc"), label = "G", gp = gpar(fontsize = base_text_size + 2, fontface = "bold", col = black_text_colour))
-
-dev.off()
-###############################################################
-
